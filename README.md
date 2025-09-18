@@ -59,7 +59,7 @@ bike_sales_agent/
 ├── 📁 Data/                    # Data sources
 │   ├── product_catalog.json    # 15 bikes with specs
 │   └── faq.txt                # Customer FAQ knowledge base
-├── 📁 bike_sales_agent/        # Main application
+├── 📁 src/                     # Main application
 │   ├── agent.py               # PydanticAI agent + conversation memory
 │   ├── tools.py               # 4 core tools implementation
 │   ├── models.py              # Pydantic models for API
@@ -125,7 +125,7 @@ uv sync
 
 4. **Start Server**
 ```bash
-uv run uvicorn bike_sales_agent.api:app --port 8005
+uv run uvicorn src.api:app --port 8005
 ```
 
 5. **Test Health**
@@ -329,12 +329,12 @@ uv run python test_faq_simulation.py
 
 ### Local Development
 ```bash
-uv run uvicorn bike_sales_agent.api:app --port 8005 --reload
+uv run uvicorn src.api:app --port 8005 --reload
 ```
 
 ### Production
 ```bash
-uv run uvicorn bike_sales_agent.api:app --host 0.0.0.0 --port 8005
+uv run uvicorn src.api:app --host 0.0.0.0 --port 8005
 ```
 
 ### Docker (Optional)
@@ -343,7 +343,7 @@ FROM python:3.11-slim
 WORKDIR /app
 COPY . .
 RUN pip install uv && uv sync
-CMD ["uv", "run", "uvicorn", "bike_sales_agent.api:app", "--host", "0.0.0.0", "--port", "8005"]
+CMD ["uv", "run", "uvicorn", "src.api:app", "--host", "0.0.0.0", "--port", "8005"]
 ```
 
 ## 🔧 Troubleshooting
@@ -356,7 +356,7 @@ CMD ["uv", "run", "uvicorn", "bike_sales_agent.api:app", "--host", "0.0.0.0", "-
 pkill -f uvicorn
 
 # Or use different port
-uv run uvicorn bike_sales_agent.api:app --port 8006
+uv run uvicorn src.api:app --port 8006
 ```
 
 #### Missing API Key
