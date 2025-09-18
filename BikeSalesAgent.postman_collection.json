@@ -1,0 +1,314 @@
+{
+	"info": {
+		"_postman_id": "bike-sales-agent-collection",
+		"name": "Bike Sales Agent API",
+		"description": "Complete API collection for testing the PydanticAI-powered bike sales agent with conversation memory, vector search, and CRM integration.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/health",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"health"
+					]
+				},
+				"description": "Check if the API server is running and healthy"
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Bikes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/bikes",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"bikes"
+					]
+				},
+				"description": "Retrieve the complete bike catalog (15 bikes from product_catalog.json)"
+			},
+			"response": []
+		},
+		{
+			"name": "Get FAQ",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/faq",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"faq"
+					]
+				},
+				"description": "Get the FAQ content from faq.txt file"
+			},
+			"response": []
+		},
+		{
+			"name": "Chat - Initial Bike Request",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"message\": \"Hi, I need a mountain bike under €2000\",\n  \"conversation_id\": \"customer-001\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/chat",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"chat"
+					]
+				},
+				"description": "Start a conversation asking for a mountain bike. Agent should use product_search tool and show actual bikes from catalog."
+			},
+			"response": []
+		},
+		{
+			"name": "Chat - Follow-up Question (Memory Test)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"message\": \"Tell me more about the Trailblazer 500\",\n  \"conversation_id\": \"customer-001\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/chat",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"chat"
+					]
+				},
+				"description": "Follow-up question using same conversation_id. Agent should remember the mountain bike context and provide details about Trailblazer 500."
+			},
+			"response": []
+		},
+		{
+			"name": "Chat - FAQ Question",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"message\": \"What is your return policy?\",\n  \"conversation_id\": \"customer-002\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/chat",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"chat"
+					]
+				},
+				"description": "Test FAQ search functionality. Agent should use faq_search tool and return policy information from faq.txt."
+			},
+			"response": []
+		},
+		{
+			"name": "Chat - Warranty Question",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"message\": \"What about warranty coverage?\",\n  \"conversation_id\": \"customer-002\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/chat",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"chat"
+					]
+				},
+				"description": "Another FAQ question using same conversation_id. Should return warranty information (2-year warranty)."
+			},
+			"response": []
+		},
+		{
+			"name": "Chat - Interest Detection",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"message\": \"I'm interested in buying the Urban Cruiser X. My name is Sarah Johnson\",\n  \"conversation_id\": \"customer-003\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/chat",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"chat"
+					]
+				},
+				"description": "Test interest detection and lead collection. Response should have interest_detected: true and agent should ask for email to complete lead."
+			},
+			"response": []
+		},
+		{
+			"name": "Chat - Complete Lead Collection",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"message\": \"My email is sarah.johnson@email.com and phone is 555-0123\",\n  \"conversation_id\": \"customer-003\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/chat",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"chat"
+					]
+				},
+				"description": "Complete the lead collection process. Agent should use create_lead tool and confirm lead creation with Lead ID."
+			},
+			"response": []
+		},
+		{
+			"name": "Chat - Budget Constraint Search",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"message\": \"Show me hybrid bikes under €1200\",\n  \"conversation_id\": \"customer-004\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/chat",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"chat"
+					]
+				},
+				"description": "Test product search with price filtering. Agent should find hybrid bikes under €1200 like Hybrid Comfort 300."
+			},
+			"response": []
+		},
+		{
+			"name": "Chat - E-bike Inquiry",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"message\": \"Do you have electric bikes for commuting?\",\n  \"conversation_id\": \"customer-005\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/chat",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"chat"
+					]
+				},
+				"description": "Test e-bike search. Should find EcoRide E-City and EcoRide E-MTB from the catalog."
+			},
+			"response": []
+		},
+		{
+			"name": "Chat - Delivery Question",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"message\": \"How long does delivery take?\",\n  \"conversation_id\": \"customer-006\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/chat",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"chat"
+					]
+				},
+				"description": "Test FAQ search for delivery information. Should return '5-7 business days for in-stock bikes'."
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8005",
+			"type": "string"
+		}
+	]
+}
